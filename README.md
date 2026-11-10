@@ -80,6 +80,3 @@ with their training configuration and are reloaded on later runs.
   Scientific Data 10, 41 (2023).
 - J. N. Kather et al. *Predicting survival from colorectal cancer histology slides using deep learning: A
   retrospective multicenter study.* PLOS Medicine 16(1), e1002730 (2019).
-
-This project started as a course project at the University of Basel and was later reworked: a corrected attack setup, a second
-attack, scale-invariant gradient diagnostics and the PathMNIST experiment.
