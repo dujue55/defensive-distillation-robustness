@@ -1,8 +1,15 @@
 # Does a Smaller Gradient Mean a More Robust Model?
 
-Defensive distillation (Papernot et al., 2016) makes a network's input gradients very small and is reported to
-protect it against adversarial examples. This project tests that claim on CIFAR-10 and on PathMNIST, a dataset of
-histopathology image patches.
+**Why this matters.** A defence is only as strong as the attack used to test it. If the attack relies on something
+the defence happens to hide, the model looks robust when it is not. Such a false sense of security is hard to spot
+from the numbers alone, and it matters most where models support decisions, as in medical imaging. Defensive
+distillation (Papernot et al., 2016) is a well-known case: it makes input gradients vanish and was reported to stop
+adversarial examples, but later work showed that defences of this kind hide the gradient rather than remove the
+weakness (Carlini & Wagner, 2016; Athalye et al., 2018).
+
+**Question.** Does the robustness of a distilled model survive an attack that does not use the softmax gradient, and
+is a small input-gradient norm a reliable sign of robustness? The study first reproduces the effect on CIFAR-10, then
+repeats it on PathMNIST, a dataset of histopathology image patches.
 
 **Finding:** the protection only appears under an attack that follows the cross-entropy gradient. An attack on the
 logits still succeeds on almost every image. Here, a small gradient does not mean a robust model.
@@ -51,12 +58,18 @@ sign of robustness.
 
 Full settings, training checks and the gradient analysis are in the notebooks.
 
-## Limitations
+## What this means
+
+A robustness claim should be tested with more than one attack loss, including one that works on the logits. A small
+gradient norm is not evidence of robustness on its own.
+
+## Limitations and next steps
 
 - One small CNN, low-resolution images and one training run per model.
 - One attack budget (ε = 8/255, 20 steps, one restart).
 - On PathMNIST, test accuracy (about 86%) is much lower than validation accuracy (about 98%). The test set is a
   separate dataset (CRC-VAL-HE-7K) from the training data (NCT-CRC-HE-100K). This project does not study this gap.
+- Next: standard stronger attacks such as AutoAttack, and larger models on full-resolution pathology images.
 
 ## Files
 
@@ -76,6 +89,8 @@ with their training configuration and are reloaded on later runs.
 - N. Papernot, P. McDaniel, X. Wu, S. Jha, A. Swami. *Distillation as a Defense to Adversarial Perturbations against
   Deep Neural Networks.* IEEE S&P 2016.
 - N. Carlini, D. Wagner. *Defensive Distillation is Not Robust to Adversarial Examples.* arXiv:1607.04311, 2016.
+- A. Athalye, N. Carlini, D. Wagner. *Obfuscated Gradients Give a False Sense of Security: Circumventing Defenses to
+  Adversarial Examples.* ICML 2018.
 - A. Madry, A. Makelov, L. Schmidt, D. Tsipras, A. Vladu. *Towards Deep Learning Models Resistant to Adversarial
   Attacks.* ICLR 2018.
 - J. Yang et al. *MedMNIST v2: A large-scale lightweight benchmark for 2D and 3D biomedical image classification.*
