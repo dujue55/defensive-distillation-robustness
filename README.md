@@ -32,7 +32,8 @@ without distillation.*
 After distillation at a high temperature T, the network's output scores (logits) become very large. At test time the
 softmax then saturates: the predicted class gets a probability of almost exactly 1, and the cross-entropy gradient
 becomes zero in float32. At T = 50 this happens for 94% of the correctly classified test images on PathMNIST and 86%
-on CIFAR-10. An attack that follows this gradient has no direction to move in, so the model looks robust.
+on CIFAR-10. For these images, an attack that follows this gradient has no direction to move in, so the model looks
+more robust than it is.
 
 Margin-PGD works on the difference between the logits, which does not pass through the softmax. It still finds
 adversarial examples for almost all images, so the distilled models are not harder to attack. This is consistent with
@@ -65,7 +66,8 @@ Full settings, training checks and the gradient analysis are in the notebooks.
 | `cifar10.ipynb` | CIFAR-10 experiment, same pipeline |
 | `figures/` | The figure above and the script that draws it from the notebook outputs |
 
-The notebooks run on Kaggle with a GPU (*Save & Run All*). To run them locally, put `cifar-10-batches-py/` or
+The notebooks run on Kaggle with a GPU (*Save & Run All*). All settings are in the configuration cell. Without saved
+models, a run trains every model from scratch (about 2.5 hours for PathMNIST). To run them locally, put `cifar-10-batches-py/` or
 `pathmnist.npz` (available through the `medmnist` package) next to the notebook. Trained models are saved together
 with their training configuration and are reloaded on later runs.
 
